@@ -109,6 +109,15 @@ export const updateStudentHomeroom = async ({ id, homeroom_id }) => {
 `
 }
 
+export const removeStudentHomeroom = async ({ id }) => {
+  return await sql`
+    UPDATE students
+    SET homeroom_id= NULL
+    WHERE id=${id}
+    RETURNING *
+`
+}
+
 export const addTeacher = async ({ name, school_id, subject }) => {
   return await sql`
     INSERT into teachers (name, school_id, subject)

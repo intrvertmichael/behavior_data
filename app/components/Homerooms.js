@@ -8,6 +8,7 @@ import {
 } from "../utils/dbFunctions"
 
 import AddStudentToHomeroom from "./AddStudentToHomeroom"
+import HomeroomStudents from "./HomeroomStudents"
 
 async function Homeroom({ homeroom, currentSchool }) {
   const studentsInHomeroom = await getStudentsByHomeroom(homeroom.id)
@@ -24,15 +25,7 @@ async function Homeroom({ homeroom, currentSchool }) {
         currentSchool ? "" : `at ${homeroom.school_name}`
       } - Professor ${capitalize(homeroom.teacher_name)}`}</p>
 
-      <ul className='pl-4 list-disc text-neutral-500'>
-        {studentsInHomeroom?.map(student => {
-          return (
-            <li key={student.id}>
-              {`${student.name} - ${student.age} years old`}
-            </li>
-          )
-        })}
-      </ul>
+      <HomeroomStudents studentsInHomeroom={studentsInHomeroom} />
 
       <AddStudentToHomeroom
         students={remainingStudents}
