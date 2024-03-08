@@ -5,116 +5,12 @@ import {
   getStudentsBySchoolId,
   getTeachersBySchoolId,
 } from "../utils/dbFunctions"
+import { mockData } from "../constants/mock"
 
 import DayData from "../components/DayData"
-import StudentList from "../components/StudentList"
-import TeacherList from "../components/TeacherList"
+import ListWrapper from "../components/ListWrapper"
 import SchoolDropDown from "../components/SchoolDropdown"
-import Classes from "../components/Classes"
-
-const mockDayData = {
-  date: "January 15, 2024",
-  behavior: [
-    {
-      period: 0,
-      behaved: true,
-      worked: true,
-    },
-    {
-      period: 1,
-      behaved: true,
-      worked: true,
-    },
-    {
-      period: 2,
-      behaved: true,
-      worked: false,
-    },
-    {
-      period: 3,
-      behaved: false,
-      worked: false,
-    },
-    {
-      period: 4,
-      behaved: false,
-      worked: true,
-    },
-    {
-      period: 5,
-      behaved: true,
-      worked: true,
-    },
-    {
-      period: 6,
-      behaved: false,
-      worked: false,
-    },
-    {
-      period: 7,
-      behaved: true,
-      worked: true,
-    },
-    {
-      period: 8,
-      behaved: true,
-      worked: false,
-    },
-  ],
-}
-
-const mockDayData2 = {
-  date: "January 16, 2024",
-  behavior: [
-    {
-      period: 0,
-      behaved: true,
-      worked: true,
-    },
-    {
-      period: 1,
-      behaved: true,
-      worked: true,
-    },
-    {
-      period: 2,
-      behaved: true,
-      worked: false,
-    },
-    {
-      period: 3,
-      behaved: false,
-      worked: false,
-    },
-    {
-      period: 4,
-      behaved: false,
-      worked: true,
-    },
-    {
-      period: 5,
-      behaved: true,
-      worked: true,
-    },
-    {
-      period: 6,
-      behaved: false,
-      worked: false,
-    },
-    {
-      period: 7,
-      behaved: true,
-      worked: true,
-    },
-    {
-      period: 8,
-      behaved: true,
-      worked: false,
-    },
-  ],
-}
-
-const mockData = [mockDayData, mockDayData2]
+import Homerooms from "../components/Homerooms"
 
 export default async function Home({ params }) {
   const teachers = params.school
@@ -139,24 +35,24 @@ export default async function Home({ params }) {
       </h2>
 
       <div className='grid grid-cols-2'>
-        <TeacherList
+        <ListWrapper
           label='teachers'
           items={teachers}
           currentSchool={currentSchool}
           schools={schools}
+          teachers
         />
 
-        <StudentList
+        <ListWrapper
           label='students'
           items={students}
           currentSchool={currentSchool}
           schools={schools}
+          students
         />
       </div>
 
-      {teachers && students && (
-        <Classes teachers={teachers} students={students} />
-      )}
+      <Homerooms currentSchool={currentSchool} />
 
       {/* {mockData.map(day => (
         <DayData key={day.date} studentData={day} />

@@ -1,12 +1,6 @@
 import { capitalize } from "lodash"
 
-export default function List({
-  label,
-  items,
-  handleItemClick,
-  currentSchool,
-  schools,
-}) {
+export default function List({ label, items, handleItemClick, currentSchool }) {
   return (
     <>
       <h2 className='mb-1 text-2xl'>{capitalize(label)}</h2>
@@ -19,10 +13,8 @@ export default function List({
             {item.subject && ` teaches ${capitalize(item.subject)}`}
             {!currentSchool &&
               (item.subject
-                ? ` at ${schools.find(s => s.id === item.school_id)?.name}`
-                : ` and goes to ${
-                    schools.find(s => s.id === item.school_id)?.name
-                  }`)}
+                ? ` at ${item.school_name}`
+                : ` and goes to ${item.school_name}`)}
           </li>
         ))}
       </ul>
