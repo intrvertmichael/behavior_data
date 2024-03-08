@@ -15,7 +15,11 @@ export default function HomeroomStudents({ studentsInHomeroom }) {
     <ul className='pl-4 list-disc text-neutral-500'>
       {studentsInHomeroom?.map(student => {
         return (
-          <li key={student.id} onClick={() => handleClick(student)}>
+          <li
+            key={student.id}
+            onClick={() => handleClick(student)}
+            className='cursor-pointer hover:text-red-500'
+          >
             {`${student.name} - ${student.age} years old`}
           </li>
         )

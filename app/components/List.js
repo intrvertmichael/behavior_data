@@ -7,7 +7,11 @@ export default function List({ label, items, handleItemClick, currentSchool }) {
 
       <ul className='pl-4 mb-6 list-disc'>
         {items?.map(item => (
-          <li key={item.id} onClick={() => handleItemClick(item)}>
+          <li
+            key={item.id}
+            onClick={() => handleItemClick(item)}
+            className='cursor-pointer hover:text-neutral-400'
+          >
             {capitalize(item.name)}
             {item.age && ` is ${item.age} years old`}
             {item.subject && ` teaches ${capitalize(item.subject)}`}
