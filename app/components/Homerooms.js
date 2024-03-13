@@ -2,6 +2,7 @@ import { capitalize } from "lodash"
 
 import {
   getAllHomerooms,
+  getAllSchools,
   getHomeroomsBySchoolId,
   getStudentsByHomeroom,
   getStudentsBySchoolIdWithoutHomeroom,
@@ -9,6 +10,7 @@ import {
 
 import AddStudentToHomeroom from "./AddStudentToHomeroom"
 import HomeroomStudents from "./HomeroomStudents"
+import AddHomeroom from "./AddHomeroom"
 
 async function Homeroom({ homeroom, currentSchool }) {
   const studentsInHomeroom = await getStudentsByHomeroom(homeroom.id)
@@ -40,6 +42,8 @@ export default async function Homerooms({ currentSchool }) {
     ? await getHomeroomsBySchoolId(currentSchool.id)
     : await getAllHomerooms()
 
+  const schools = await getAllSchools()
+
   return (
     <div className='p-6 border rounded border-neutral-900'>
       <h2 className='pb-6 text-2xl'>
@@ -54,6 +58,8 @@ export default async function Homerooms({ currentSchool }) {
             currentSchool={currentSchool}
           />
         ))}
+
+        <AddHomeroom schools={schools} />
       </div>
     </div>
   )

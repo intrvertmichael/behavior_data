@@ -4,9 +4,10 @@ export default function DropDown({
   onChange,
   defaultItem,
   items,
+  fullWidth,
 }) {
   return (
-    <div className='flex gap-3 pt-6'>
+    <div className={`flex gap-3 pt-6 ${fullWidth ? "w-full" : ""}`}>
       {label && (
         <label htmlFor='school-select' className='text-neutral-500'>
           {label}:
@@ -16,7 +17,7 @@ export default function DropDown({
       <select
         name='school'
         id='school-select'
-        className='p-1 text-black rounded'
+        className={`p-1 text-black rounded ${fullWidth ? "w-full" : ""}`}
         value={value}
         onChange={onChange}
       >
