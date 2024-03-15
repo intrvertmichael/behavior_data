@@ -14,6 +14,7 @@ export default function List({ label, items, handleItemClick, currentSchool }) {
           >
             {capitalize(item.name)}
             {item.age && ` is ${item.age} years old`}
+            {item.grade && ` in the ${item.grade} grade`}
             {item.subject && ` teaches ${capitalize(item.subject)}`}
             {!currentSchool &&
               (item.subject

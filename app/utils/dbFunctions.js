@@ -10,7 +10,8 @@ export const getAllTeachers = async () =>
       teachers.id AS id, 
       teachers.name AS name, 
       teachers.subject AS subject, 
-      schools.name AS school_name
+      schools.name AS school_name,
+      schools.id as school_id
     FROM teachers 
     JOIN schools ON teachers.school_id = schools.id
     ORDER BY name
@@ -22,7 +23,9 @@ export const getAllStudents = async () =>
       students.id as id, 
       students.name as name, 
       students.age as age, 
-      schools.name as school_name
+      students.grade as grade,
+      schools.name as school_name,
+      schools.id as school_id
     FROM students
     JOIN schools ON students.school_id = schools.id
     ORDER BY name
@@ -33,6 +36,7 @@ export const getAllHomerooms = async () => {
     SELECT 
       homerooms.id as id,
       homerooms.school_id as school_id,
+      homerooms.grade as grade,
       teachers.name as teacher_name,
       teachers.subject as subject,
       schools.name as school_name
@@ -41,6 +45,7 @@ export const getAllHomerooms = async () => {
     ON homerooms.teacher_id = teachers.id
     JOIN schools
     ON homerooms.school_id = schools.id
+    ORDER BY grade
   `
 }
 
@@ -49,12 +54,14 @@ export const getHomeroomsBySchoolId = async id => {
     SELECT 
       homerooms.id as id,
       homerooms.school_id as school_id,
+      homerooms.grade as grade,
       teachers.name as teacher_name,
       teachers.subject as subject 
     FROM homerooms
     JOIN teachers
     ON homerooms.teacher_id = teachers.id
     WHERE homerooms.school_id = ${id}
+    ORDER BY grade
   `
 }
 
@@ -70,12 +77,13 @@ export const getStudentsByHomeroom = async id => {
   return await sql`SELECT * FROM students WHERE homeroom_id = ${id}`
 }
 
-export const getStudentsBySchoolIdWithoutHomeroom = async id => {
+export const getStudentsBySchoolIdWithoutHomeroom = async (id, grade) => {
   return await sql`
     SELECT * 
     FROM students 
     WHERE homeroom_id IS NULL
     AND school_id = ${id}
+    AND grade = ${grade}
   `
 }
 
@@ -140,10 +148,10 @@ export const addTeacher = async ({ name, school_id, subject }) => {
 `
 }
 
-export const addHomeroom = async ({ school_id, teacher_id }) => {
+export const addHomeroom = async ({ school_id, teacher_id, grade }) => {
   return await sql`
-    INSERT into homerooms (teacher_id, school_id)
-    VALUES (${teacher_id}, ${school_id})
+    INSERT into homerooms (teacher_id, school_id, grade)
+    VALUES (${teacher_id}, ${school_id}, ${grade})
     RETURNING *
 `
 }

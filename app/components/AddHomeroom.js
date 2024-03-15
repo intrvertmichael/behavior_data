@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { isEmpty } from "lodash"
+import { isEmpty, times } from "lodash"
 
 import {
   addHomeroom,
@@ -19,6 +19,7 @@ export default function AddHomeroom({ schools }) {
   const [teachers, setTeachers] = useState([])
   const [school_id, setSchoolId] = useState(0)
   const [teacher_id, setTeacherId] = useState(0)
+  const [grade, setGrade] = useState(0)
 
   const handleClick = () => setShowForm(curr => !curr)
 
@@ -32,19 +33,20 @@ export default function AddHomeroom({ schools }) {
     setSchoolId(e.target.value)
 
     const res = await getTeachersBySchoolIdWithoutHomeroom(e.target.value)
-    console.log({ res })
     setTeachers(res)
   }
 
   const handleTeacherChange = e => setTeacherId(e.target.value)
+  const handleGradeChange = e => setGrade(e.target.value)
 
   const handleSubmit = async e => {
     e.preventDefault()
-    await addHomeroom({ teacher_id, school_id })
+    await addHomeroom({ teacher_id, school_id, grade })
 
     setSchoolId("")
     setTeacherId("")
     setTeachers([])
+    setGrade(0)
     setShowForm(false)
 
     router.refresh()
@@ -67,6 +69,16 @@ export default function AddHomeroom({ schools }) {
             onChange={handleSchoolChange}
             defaultItem='- Choose School -'
             items={schools}
+            fullWidth
+          />
+
+          <DropDown
+            onChange={handleGradeChange}
+            defaultItem='- Choose Grade -'
+            items={times(10).map(key => {
+              const value = key + 1
+              return { id: value, name: value }
+            })}
             fullWidth
           />
 

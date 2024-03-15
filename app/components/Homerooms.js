@@ -19,13 +19,18 @@ async function Homeroom({ homeroom, currentSchool }) {
 
   const remainingStudents = await getStudentsBySchoolIdWithoutHomeroom(
     homeroom.school_id,
+    homeroom.grade,
   )
 
   return (
     <div className='p-6 border rounded'>
-      <p>{`Class ${homeroom.id} ${
+      <p>{`Class ${homeroom.id} Grade ${homeroom.grade} ${
         currentSchool ? "" : `at ${homeroom.school_name}`
-      } - Professor ${capitalize(homeroom.teacher_name)}`}</p>
+      }`}</p>
+
+      <p className='mb-3 text-neutral-400'>{`Professor ${capitalize(
+        homeroom.teacher_name,
+      )}`}</p>
 
       <HomeroomStudents studentsInHomeroom={studentsInHomeroom} />
 

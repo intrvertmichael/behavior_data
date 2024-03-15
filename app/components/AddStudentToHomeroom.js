@@ -7,7 +7,7 @@ import { updateStudentHomeroom } from "../utils/dbFunctions"
 
 import DropDown from "./DropDown"
 
-export default function AddStudentToHomeroom({ students, homeroom_id }) {
+export default function AddStudentToHomeroom({ students, homeroom_id, grade }) {
   const router = useRouter()
 
   const onChange = async e => {
