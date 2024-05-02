@@ -2,6 +2,89 @@
 
 import sql from "../db"
 
+export const initializeDB = async () => {
+  await sql`
+    CREATE TABLE IF NOT EXISTS schools (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(100)
+    );
+  `
+
+  await sql`
+    INSERT INTO
+      schools (id, name)
+    SELECT
+      '1', 'apple'
+    WHERE NOT EXISTS (
+      SELECT 1 FROM schools
+    );
+  `
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS teachers (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(100),
+      subject VARCHAR(100),
+      school_id INT, 
+      FOREIGN KEY (school_id) REFERENCES schools(id)
+    );
+  `
+
+  await sql`
+    INSERT INTO
+      teachers (id,name, subject, school_id)
+    SELECT
+      '1', 'updog', 'philosophy', '1'
+    WHERE NOT EXISTS (
+      SELECT 1 FROM teachers
+    );
+  `
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS homerooms (
+      id SERIAL PRIMARY KEY,
+      grade INT, 
+      teacher_id INT, 
+      FOREIGN KEY (teacher_id) REFERENCES teachers(id),
+      school_id INT, 
+      FOREIGN KEY (school_id) REFERENCES schools(id)
+    );
+  `
+
+  await sql`
+    INSERT INTO
+      homerooms (id, grade, teacher_id, school_id)
+    SELECT
+      '1', '10', '1', '1'
+    WHERE NOT EXISTS (
+      SELECT 1 FROM homerooms
+    );
+  `
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS students (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(100),
+      age INT, 
+      grade INT, 
+      school_id INT, 
+      FOREIGN KEY (school_id) REFERENCES schools(id),
+      homeroom_id INT, 
+      FOREIGN KEY (homeroom_id) REFERENCES homerooms(id)
+    );
+  `
+
+  await sql`
+    INSERT INTO
+      students (id, name, age, grade, school_id, homeroom_id)
+    SELECT
+      '1', 'michael', '35', '10', '1', '1'
+    WHERE NOT EXISTS (
+      SELECT 1 FROM students
+    );
+  `
+}
+
 export const getAllSchools = async () => await sql`SELECT * FROM schools`
 
 export const getAllTeachers = async () =>

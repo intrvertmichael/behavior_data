@@ -4,6 +4,7 @@ import {
   getAllTeachers,
   getStudentsBySchoolId,
   getTeachersBySchoolId,
+  initializeDB,
 } from "../utils/dbFunctions"
 import { mockData } from "../constants/mock"
 
@@ -13,6 +14,8 @@ import SchoolDropDown from "../components/SchoolDropdown"
 import Homerooms from "../components/Homerooms"
 
 export default async function Home({ params }) {
+  await initializeDB()
+
   const teachers = params.school
     ? await getTeachersBySchoolId(params.school)
     : await getAllTeachers()
