@@ -12,6 +12,7 @@ import DayData from "../components/DayData"
 import ListWrapper from "../components/ListWrapper"
 import SchoolDropDown from "../components/SchoolDropdown"
 import Homerooms from "../components/Homerooms"
+import DailySchedule from "../components/DailySchedule"
 
 export default async function Home({ params }) {
   await initializeDB()
@@ -56,6 +57,8 @@ export default async function Home({ params }) {
       </div>
 
       <Homerooms currentSchool={currentSchool} />
+
+      <DailySchedule />
 
       {/* {mockData.map(day => (
         <DayData key={day.date} studentData={day} />

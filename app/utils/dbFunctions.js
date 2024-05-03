@@ -25,8 +25,7 @@ export const initializeDB = async () => {
       id SERIAL PRIMARY KEY,
       name VARCHAR(100),
       subject VARCHAR(100),
-      school_id INT, 
-      FOREIGN KEY (school_id) REFERENCES schools(id)
+      school_id INT, FOREIGN KEY (school_id) REFERENCES schools(id)
     );
   `
 
@@ -44,10 +43,8 @@ export const initializeDB = async () => {
     CREATE TABLE IF NOT EXISTS homerooms (
       id SERIAL PRIMARY KEY,
       grade INT, 
-      teacher_id INT, 
-      FOREIGN KEY (teacher_id) REFERENCES teachers(id),
-      school_id INT, 
-      FOREIGN KEY (school_id) REFERENCES schools(id)
+      teacher_id INT, FOREIGN KEY (teacher_id) REFERENCES teachers(id),
+      school_id INT, FOREIGN KEY (school_id) REFERENCES schools(id)
     );
   `
 
@@ -67,10 +64,8 @@ export const initializeDB = async () => {
       name VARCHAR(100),
       age INT, 
       grade INT, 
-      school_id INT, 
-      FOREIGN KEY (school_id) REFERENCES schools(id),
-      homeroom_id INT, 
-      FOREIGN KEY (homeroom_id) REFERENCES homerooms(id)
+      school_id INT, FOREIGN KEY (school_id) REFERENCES schools(id),
+      homeroom_id INT, FOREIGN KEY (homeroom_id) REFERENCES homerooms(id)
     );
   `
 
@@ -83,6 +78,20 @@ export const initializeDB = async () => {
       SELECT 1 FROM students
     );
   `
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS daily_schedule (
+      id SERIAL PRIMARY KEY,
+      date DATE,
+      school_id INT, FOREIGN KEY (school_id) REFERENCES schools(id),
+      teacher_id INT, FOREIGN KEY (teacher_id) REFERENCES teachers(id),
+      period1 INT, FOREIGN KEY (period1) REFERENCES homerooms(id),
+      period2 INT, FOREIGN KEY (period2) REFERENCES homerooms(id),
+      period3 INT, FOREIGN KEY (period3) REFERENCES homerooms(id),
+      period4 INT, FOREIGN KEY (period4) REFERENCES homerooms(id),
+      period5 INT, FOREIGN KEY (period5) REFERENCES homerooms(id)
+    );
+`
 }
 
 export const getAllSchools = async () => await sql`SELECT * FROM schools`
@@ -261,3 +270,28 @@ export const getStudentsInSchool = async school_id =>
     ON students.school_id = schools.id
     WHERE school_id = ${school_id}
 `
+
+export const getDailySchedule = async date => {
+  return await sql`
+    SELECT
+      *,
+      p1.id as period1,
+      p2.id as period2,
+      p3.id as period3,
+      p3.id as period4,
+      p3.id as period5
+    
+    FROM daily_schedule
+    
+    LEFT JOIN teachers period_teacher
+    ON daily_schedule.teacher_id = period_teacher.id
+    
+    LEFT JOIN homerooms P1 ON daily_schedule.period1 = P1.id
+    LEFT JOIN homerooms P2 ON daily_schedule.period2 = P2.id
+    LEFT JOIN homerooms P3 ON daily_schedule.period3 = P3.id
+    LEFT JOIN homerooms P4 ON daily_schedule.period3 = P4.id
+    LEFT JOIN homerooms P5 ON daily_schedule.period3 = P5.id
+
+    WHERE date = ${date}'
+  `
+}
