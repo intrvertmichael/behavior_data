@@ -1,6 +1,9 @@
 import { isEmpty } from "lodash"
+
 import { getDailySchedule } from "../utils/dbFunctions"
-import { createFullDate } from "../utils/general"
+import { createFullDateISO, createFullDateMDY } from "../utils/general"
+
+import AddDailySchedule from "./AddDailySchedule"
 
 function TableCell({ children, isHeading }) {
   return (
@@ -14,17 +17,17 @@ function TableCell({ children, isHeading }) {
   )
 }
 
-export default async function DailySchedule() {
-  const schedule = await getDailySchedule("2023-01-01")
+export default async function DailySchedule({ currentSchool }) {
+  const date = createFullDateISO(new Date())
+  const schedule = await getDailySchedule(date)
 
-  if (isEmpty(schedule)) return <></>
-
-  const date = createFullDate(schedule[0].date)
+  // TODO: NEED TO ADD CASE FOR NO SCHOOL SELECTED
 
   return (
     <div className='p-6 border rounded border-neutral-900'>
       <h2 className='pb-6 text-2xl text-neutral-500'>
-        Schedule for <span className='text-white'>{date}</span>
+        Schedule for{" "}
+        <span className='text-white'>{createFullDateMDY(date)}</span>
       </h2>
 
       <div className='grid grid-cols-6'>
@@ -36,16 +39,19 @@ export default async function DailySchedule() {
         <TableCell isHeading>Period 5</TableCell>
       </div>
 
-      {schedule.map(day => (
-        <div key={day.id} className='grid grid-cols-6'>
-          <TableCell>{day.subject}</TableCell>
-          <TableCell>Class {day.period1}</TableCell>
-          <TableCell>Class {day.period2}</TableCell>
-          <TableCell>Class {day.period3}</TableCell>
-          <TableCell>Class {day.period4}</TableCell>
-          <TableCell>Class {day.period5}</TableCell>
-        </div>
-      ))}
+      {!isEmpty(schedule) &&
+        schedule.map(day => (
+          <div key={day.id} className='grid grid-cols-6'>
+            <TableCell>{day.subject}</TableCell>
+            <TableCell>Class {day.period1}</TableCell>
+            <TableCell>Class {day.period2}</TableCell>
+            <TableCell>Class {day.period3}</TableCell>
+            <TableCell>Class {day.period4}</TableCell>
+            <TableCell>Class {day.period5}</TableCell>
+          </div>
+        ))}
+
+      <AddDailySchedule currentSchool={currentSchool} />
     </div>
   )
 }

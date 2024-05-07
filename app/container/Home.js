@@ -58,7 +58,7 @@ export default async function Home({ params }) {
 
       <Homerooms currentSchool={currentSchool} />
 
-      <DailySchedule />
+      <DailySchedule currentSchool={currentSchool} />
 
       {/* {mockData.map(day => (
         <DayData key={day.date} studentData={day} />

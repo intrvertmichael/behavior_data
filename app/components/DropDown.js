@@ -5,9 +5,12 @@ export default function DropDown({
   defaultItem,
   items,
   fullWidth,
+  divClassname = "",
 }) {
   return (
-    <div className={`flex gap-3 pt-6 ${fullWidth ? "w-full" : ""}`}>
+    <div
+      className={`flex gap-3 pt-6 ${fullWidth ? "w-full" : ""} ${divClassname}`}
+    >
       {label && (
         <label htmlFor='school-select' className='text-neutral-500'>
           {label}:

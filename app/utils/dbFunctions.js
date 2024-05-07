@@ -275,6 +275,7 @@ export const getDailySchedule = async date => {
   return await sql`
     SELECT
       *,
+      daily_schedule.id as id,
       p1.id as period1,
       p2.id as period2,
       p3.id as period3,
@@ -292,6 +293,23 @@ export const getDailySchedule = async date => {
     LEFT JOIN homerooms P4 ON daily_schedule.period3 = P4.id
     LEFT JOIN homerooms P5 ON daily_schedule.period3 = P5.id
 
-    WHERE date = ${date}'
+    WHERE date = ${date}
   `
+}
+
+export const addDailySchedule = async ({
+  date,
+  school_id,
+  teacher_id,
+  period1,
+  period2,
+  period3,
+  period4,
+  period5,
+}) => {
+  return await sql`
+  INSERT into daily_schedule (date, school_id, teacher_id, period1, period2, period3, period4, period5)
+  VALUES (${date}, ${school_id}, ${teacher_id}, ${period1}, ${period2}, ${period3}, ${period4}, ${period5})
+  RETURNING *
+`
 }
