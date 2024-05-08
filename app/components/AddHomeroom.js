@@ -67,14 +67,14 @@ export default function AddHomeroom({ schools }) {
 
           <DropDown
             onChange={handleSchoolChange}
-            defaultItem='- Choose School -'
+            defaultItem={{ value: "", name: "- Choose School -" }}
             items={schools}
             fullWidth
           />
 
           <DropDown
             onChange={handleGradeChange}
-            defaultItem='- Choose Grade -'
+            defaultItem={{ value: "", name: "- Choose Grade -" }}
             items={times(10).map(key => {
               const value = key + 1
               return { id: value, name: value }
@@ -85,7 +85,7 @@ export default function AddHomeroom({ schools }) {
           {!isEmpty(teachers) && (
             <DropDown
               onChange={handleTeacherChange}
-              defaultItem='- Choose Teacher -'
+              defaultItem={{ value: "", name: "- Choose Teacher -" }}
               items={teachers}
               fullWidth
             />

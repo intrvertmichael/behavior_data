@@ -15,7 +15,7 @@ export default function SchoolDropDown({ items }) {
       label='School'
       value={params.school || ""}
       onChange={handleSelectChange}
-      defaultItem='- Please choose a School -'
+      defaultItem={{ value: "", name: "- Please choose a School -" }}
       items={items}
     />
   )

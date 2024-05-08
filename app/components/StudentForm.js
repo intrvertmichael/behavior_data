@@ -49,7 +49,7 @@ export default function StudentForm({
         label={`${updateLabel}School`}
         value={school_id}
         onChange={e => setSchoolId(e.target.value)}
-        defaultItem='- Please choose a School -'
+        defaultItem={{ value: "", name: "- Please choose a School -" }}
         items={schools}
       />
     </>

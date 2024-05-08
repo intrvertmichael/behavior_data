@@ -20,23 +20,24 @@ function HomeroomClassDropDown({ value, onChange, items }) {
       onChange={onChange}
       items={items}
       divClassname='p-3'
+      defaultItem={{ value: "", name: "- Please Choose -" }}
       fullWidth
+      required
     />
   )
 }
 
 export default function AddDailySchedule({ currentSchool }) {
   const router = useRouter()
-
   const [teacher_id, setTeacherId] = useState()
-  const [teachers, setTeachers] = useState([])
-  const [homeroomClasses, setHomeroomClasses] = useState([])
+  const [teachers, setTeachers] = useState()
+  const [homeroomClasses, setHomeroomClasses] = useState()
 
-  const [period1, setperiod1] = useState("")
-  const [period2, setperiod2] = useState("")
-  const [period3, setperiod3] = useState("")
-  const [period4, setperiod4] = useState("")
-  const [period5, setperiod5] = useState("")
+  const [period1, setperiod1] = useState()
+  const [period2, setperiod2] = useState()
+  const [period3, setperiod3] = useState()
+  const [period4, setperiod4] = useState()
+  const [period5, setperiod5] = useState()
 
   useEffect(() => {
     const getOptions = async () => {
@@ -44,14 +45,6 @@ export default function AddDailySchedule({ currentSchool }) {
 
       const homerooms = await getHomeroomsBySchoolId("1")
       setHomeroomClasses(homerooms)
-
-      if (!isEmpty(homerooms)) {
-        setperiod1(homerooms[0].id)
-        setperiod2(homerooms[0].id)
-        setperiod3(homerooms[0].id)
-        setperiod4(homerooms[0].id)
-        setperiod5(homerooms[0].id)
-      }
     }
 
     getOptions()
@@ -59,6 +52,17 @@ export default function AddDailySchedule({ currentSchool }) {
 
   const handleClick = async e => {
     e.preventDefault()
+
+    if (
+      isEmpty(teacher_id) ||
+      isEmpty(period1) ||
+      isEmpty(period2) ||
+      isEmpty(period3) ||
+      isEmpty(period4) ||
+      isEmpty(period5)
+    ) {
+      return
+    }
 
     await addDailySchedule({
       date: new Date(),
@@ -74,12 +78,14 @@ export default function AddDailySchedule({ currentSchool }) {
     router.refresh()
   }
 
-  const homeroomOptions = homeroomClasses.map(homeroom => ({
+  const homeroomOptions = homeroomClasses?.map(homeroom => ({
     name: `Class ${homeroom.id}`,
     id: homeroom.id,
   }))
 
-  if (isEmpty(teachers) || isEmpty(homeroomClasses)) return <></>
+  if (isEmpty(currentSchool) || isEmpty(teachers) || isEmpty(homeroomClasses)) {
+    return <></>
+  }
 
   return (
     <form className='border border-neutral-900'>

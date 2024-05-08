@@ -5,6 +5,7 @@ export default function DropDown({
   defaultItem,
   items,
   fullWidth,
+  required,
   divClassname = "",
 }) {
   return (
@@ -23,8 +24,11 @@ export default function DropDown({
         className={`p-1 text-black rounded ${fullWidth ? "w-full" : ""}`}
         value={value}
         onChange={onChange}
+        required={required}
       >
-        {defaultItem && <option value=''>{defaultItem}</option>}
+        {defaultItem && (
+          <option value={defaultItem.value}>{defaultItem.name}</option>
+        )}
 
         {items.map(item => (
           <option key={item.id} value={item.id}>

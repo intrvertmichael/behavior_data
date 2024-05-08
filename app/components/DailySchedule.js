@@ -1,9 +1,17 @@
 import { isEmpty } from "lodash"
 
-import { getDailySchedule } from "../utils/dbFunctions"
-import { createFullDateISO, createFullDateMDY } from "../utils/general"
+import {
+  getDailySchedule,
+  getPreviousDailySchedules,
+} from "../utils/dbFunctions"
+import {
+  createISODateFromUTC,
+  createISODate,
+  createMDYDate,
+} from "../utils/general"
 
 import AddDailySchedule from "./AddDailySchedule"
+import DatePicker from "./DatePicker"
 
 function TableCell({ children, isHeading }) {
   return (
@@ -17,18 +25,33 @@ function TableCell({ children, isHeading }) {
   )
 }
 
-export default async function DailySchedule({ currentSchool }) {
-  const date = createFullDateISO(new Date())
-  const schedule = await getDailySchedule(date)
+export default async function DailySchedule({ currentSchool, dateParam }) {
+  const date = dateParam
+    ? createISODateFromUTC(dateParam)
+    : createISODate(new Date())
 
-  // TODO: NEED TO ADD CASE FOR NO SCHOOL SELECTED
+  const schedule = await getDailySchedule(date)
+  const previousDates = await getPreviousDailySchedules()
 
   return (
     <div className='p-6 border rounded border-neutral-900'>
-      <h2 className='pb-6 text-2xl text-neutral-500'>
-        Schedule for{" "}
-        <span className='text-white'>{createFullDateMDY(date)}</span>
-      </h2>
+      <div>
+        <h2 className='pb-6 text-2xl text-neutral-500'>
+          Schedule for <span className='text-white'>{createMDYDate(date)}</span>
+        </h2>
+
+        <DatePicker
+          value={date}
+          previousDates={previousDates.map(d => {
+            const formattedDate = createISODateFromUTC(d.date)
+
+            return {
+              id: formattedDate,
+              name: formattedDate,
+            }
+          })}
+        />
+      </div>
 
       <div className='grid grid-cols-6'>
         <TableCell isHeading>Subject</TableCell>
@@ -43,11 +66,11 @@ export default async function DailySchedule({ currentSchool }) {
         schedule.map(day => (
           <div key={day.id} className='grid grid-cols-6'>
             <TableCell>{day.subject}</TableCell>
-            <TableCell>Class {day.period1}</TableCell>
-            <TableCell>Class {day.period2}</TableCell>
-            <TableCell>Class {day.period3}</TableCell>
-            <TableCell>Class {day.period4}</TableCell>
-            <TableCell>Class {day.period5}</TableCell>
+            <TableCell>{day.period1 && `Class ${day.period1}`}</TableCell>
+            <TableCell>{day.period2 && `Class ${day.period2}`}</TableCell>
+            <TableCell>{day.period3 && `Class ${day.period3}`}</TableCell>
+            <TableCell>{day.period4 && `Class ${day.period4}`}</TableCell>
+            <TableCell>{day.period5 && `Class ${day.period5}`}</TableCell>
           </div>
         ))}
 

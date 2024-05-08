@@ -26,7 +26,7 @@ export default function AddStudentToHomeroom({ students, homeroom_id, grade }) {
   return (
     <DropDown
       onChange={onChange}
-      defaultItem='- Add Student to Class -'
+      defaultItem={{ value: "", name: "- Add Student to Class -" }}
       items={students}
     />
   )

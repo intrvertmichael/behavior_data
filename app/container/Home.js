@@ -14,7 +14,7 @@ import SchoolDropDown from "../components/SchoolDropdown"
 import Homerooms from "../components/Homerooms"
 import DailySchedule from "../components/DailySchedule"
 
-export default async function Home({ params }) {
+export default async function Home({ params, searchParams }) {
   await initializeDB()
 
   const teachers = params.school
@@ -29,6 +29,8 @@ export default async function Home({ params }) {
 
   const currentSchool =
     params.school && schools.find(school => String(school.id) === params.school)
+
+  const dateParam = searchParams.date
 
   return (
     <div className='grid gap-y-6'>
@@ -58,7 +60,7 @@ export default async function Home({ params }) {
 
       <Homerooms currentSchool={currentSchool} />
 
-      <DailySchedule currentSchool={currentSchool} />
+      <DailySchedule currentSchool={currentSchool} dateParam={dateParam} />
 
       {/* {mockData.map(day => (
         <DayData key={day.date} studentData={day} />

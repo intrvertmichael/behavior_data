@@ -297,6 +297,10 @@ export const getDailySchedule = async date => {
   `
 }
 
+export const getPreviousDailySchedules = async () => {
+  return await sql`SELECT DISTINCT date FROM daily_schedule`
+}
+
 export const addDailySchedule = async ({
   date,
   school_id,
