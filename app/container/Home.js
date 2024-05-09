@@ -59,7 +59,6 @@ export default async function Home({ params, searchParams }) {
       </div>
 
       <Homerooms currentSchool={currentSchool} />
-
       <DailySchedule currentSchool={currentSchool} dateParam={dateParam} />
 
       {/* {mockData.map(day => (

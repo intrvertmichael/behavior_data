@@ -23,14 +23,16 @@ async function Homeroom({ homeroom, currentSchool }) {
   )
 
   return (
-    <div className='p-6 border rounded'>
-      <p>{`Class ${homeroom.id} Grade ${homeroom.grade} ${
-        currentSchool ? "" : `at ${homeroom.school_name}`
-      }`}</p>
+    <div className='flex flex-col gap-6 p-6 border rounded border-neutral-900'>
+      <div>
+        <p>{`Class ${homeroom.id} Grade ${homeroom.grade} ${
+          currentSchool ? "" : `at ${homeroom.school_name}`
+        }`}</p>
 
-      <p className='mb-3 text-neutral-400'>{`Professor ${capitalize(
-        homeroom.teacher_name,
-      )}`}</p>
+        <p className='text-neutral-400'>{`Professor ${capitalize(
+          homeroom.teacher_name,
+        )}`}</p>
+      </div>
 
       <HomeroomStudents studentsInHomeroom={studentsInHomeroom} />
 

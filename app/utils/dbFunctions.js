@@ -317,3 +317,6 @@ export const addDailySchedule = async ({
   RETURNING *
 `
 }
+
+export const removeDailySchedule = async id =>
+  await sql`DELETE FROM daily_schedule WHERE id = ${id}`

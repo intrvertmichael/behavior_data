@@ -4,7 +4,11 @@ import { useCallback } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { isEmpty } from "lodash"
 
-import { createParamQuery } from "../utils/general"
+import {
+  createISODate,
+  createMDYDate,
+  createParamQuery,
+} from "../utils/general"
 
 import DropDown from "./DropDown"
 
@@ -13,26 +17,26 @@ export default function DatePicker({ value, previousDates }) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
+  const todayISODate = createISODate()
+
   const createParamQueryCallback = useCallback(createParamQuery, [searchParams])
 
   const onChange = e => {
-    const url = isEmpty(e.target.value)
-      ? pathname
-      : pathname +
-        "?" +
-        createParamQueryCallback("date", e.target.value, searchParams)
-
-    router.push(url)
+    router.push(
+      isEmpty(e.target.value)
+        ? pathname
+        : pathname +
+            "?" +
+            createParamQueryCallback("date", e.target.value, searchParams),
+    )
   }
 
   return (
     <DropDown
       value={value}
       onChange={onChange}
-      items={previousDates}
-      divClassname='p-3'
-      defaultItem={{ value: "", name: "- Please Choose -" }}
-      fullWidth
+      items={previousDates.sort((a, b) => new Date(b.id) - new Date(a.id))}
+      defaultItem={{ id: "", name: createMDYDate(todayISODate) }}
       required
     />
   )

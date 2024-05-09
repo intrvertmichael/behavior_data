@@ -23,15 +23,7 @@ export const createMDYDate = date => {
 }
 
 export const createISODate = date => {
-  const dateObj = new Date(date)
-  const month = dateObj.toLocaleString("default", { month: "2-digit" })
-  const day = dateObj.getDate()
-  const year = dateObj.getFullYear()
-  return `${year}-${month}-${day}`
-}
-
-export const createISODateFromUTC = date => {
-  const dateObj = new Date(date)
+  const dateObj = date ? new Date(date) : new Date()
   const year = dateObj.getUTCFullYear()
   const month = (dateObj.getUTCMonth() + 1).toString().padStart(2, "0")
   const day = dateObj.getUTCDate().toString().padStart(2, "0")
