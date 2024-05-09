@@ -27,7 +27,7 @@ function HomeroomClassDropDown({ value, onChange, items }) {
   )
 }
 
-export default function AddDailySchedule({ currentSchool }) {
+export default function AddDailySchedule({ currentSchool, date }) {
   const router = useRouter()
   const [teacher_id, setTeacherId] = useState()
   const [teachers, setTeachers] = useState()
@@ -38,6 +38,14 @@ export default function AddDailySchedule({ currentSchool }) {
   const [period3, setperiod3] = useState()
   const [period4, setperiod4] = useState()
   const [period5, setperiod5] = useState()
+
+  const formNotComplete =
+    isEmpty(teacher_id) ||
+    isEmpty(period1) ||
+    isEmpty(period2) ||
+    isEmpty(period3) ||
+    isEmpty(period4) ||
+    isEmpty(period5)
 
   useEffect(() => {
     const getOptions = async () => {
@@ -53,19 +61,10 @@ export default function AddDailySchedule({ currentSchool }) {
   const handleClick = async e => {
     e.preventDefault()
 
-    if (
-      isEmpty(teacher_id) ||
-      isEmpty(period1) ||
-      isEmpty(period2) ||
-      isEmpty(period3) ||
-      isEmpty(period4) ||
-      isEmpty(period5)
-    ) {
-      return
-    }
+    if (formNotComplete) return
 
     await addDailySchedule({
-      date: new Date(),
+      date,
       school_id: currentSchool.id,
       teacher_id,
       period1,
@@ -130,9 +129,11 @@ export default function AddDailySchedule({ currentSchool }) {
         />
       </div>
 
-      <div className='p-3'>
-        <Button label='Add Daily Schedule' onClick={handleClick} />
-      </div>
+      {!formNotComplete && (
+        <div className='p-3'>
+          <Button label='Add Daily Schedule' onClick={handleClick} />
+        </div>
+      )}
     </form>
   )
 }

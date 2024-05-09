@@ -271,7 +271,7 @@ export const getStudentsInSchool = async school_id =>
     WHERE school_id = ${school_id}
 `
 
-export const getDailySchedule = async date => {
+export const getDailySchedule = async ({ date, school_id }) => {
   return await sql`
     SELECT
       *,
@@ -294,6 +294,7 @@ export const getDailySchedule = async date => {
     LEFT JOIN homerooms P5 ON daily_schedule.period3 = P5.id
 
     WHERE date = ${date}
+    AND daily_schedule.school_id = ${school_id}
   `
 }
 

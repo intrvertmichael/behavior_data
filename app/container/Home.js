@@ -59,7 +59,18 @@ export default async function Home({ params, searchParams }) {
       </div>
 
       <Homerooms currentSchool={currentSchool} />
-      <DailySchedule currentSchool={currentSchool} dateParam={dateParam} />
+
+      {currentSchool ? (
+        <DailySchedule currentSchool={currentSchool} dateParam={dateParam} />
+      ) : (
+        schools.map(school => (
+          <DailySchedule
+            key={school.id}
+            currentSchool={school}
+            dateParam={dateParam}
+          />
+        ))
+      )}
 
       {/* {mockData.map(day => (
         <DayData key={day.date} studentData={day} />
