@@ -1,5 +1,6 @@
 "use server"
 
+import { head } from "lodash"
 import sql from "../db"
 
 export const initializeDB = async () => {
@@ -139,6 +140,10 @@ export const getAllHomerooms = async () => {
     ON homerooms.school_id = schools.id
     ORDER BY grade
   `
+}
+export const getHomeroomById = async id => {
+  const matches = await sql`SELECT * FROM homerooms WHERE id = ${id}`
+  return head(matches)
 }
 
 export const getHomeroomsBySchoolId = async id => {
@@ -300,6 +305,25 @@ export const getDailySchedule = async ({ date, school_id }) => {
 
 export const getPreviousDailySchedules = async () => {
   return await sql`SELECT DISTINCT date FROM daily_schedule`
+}
+
+export const getDailySchedulesForTeacher = async teacher_id => {
+  return await sql` SELECT DISTINCT date FROM daily_schedule WHERE teacher_id = ${teacher_id}`
+}
+
+export const getSelectedHomeroom = async ({
+  selectedTeacherPeriod,
+  teacher_id,
+  date,
+}) => {
+  const matches = await sql`
+    SELECT *
+    FROM daily_schedule 
+    WHERE teacher_id = ${teacher_id}
+    AND date = ${date}
+  `
+
+  return head(matches)[selectedTeacherPeriod]
 }
 
 export const addDailySchedule = async ({

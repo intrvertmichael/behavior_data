@@ -36,7 +36,7 @@ export default function DatePicker({ value, previousDates }) {
       value={value}
       onChange={onChange}
       items={previousDates.sort((a, b) => new Date(b.id) - new Date(a.id))}
-      defaultItem={{ id: "", name: createMDYDate(todayISODate) }}
+      defaultItem={{ value: "", id: "", name: createMDYDate(todayISODate) }}
       required
     />
   )

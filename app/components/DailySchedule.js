@@ -27,6 +27,7 @@ export default async function DailySchedule({ currentSchool, dateParam }) {
           previousDates={previousDates.map(d => ({
             id: createISODate(d.date),
             name: createMDYDate(d.date),
+            value: createISODate(d.date),
           }))}
         />
 

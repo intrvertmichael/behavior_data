@@ -13,27 +13,31 @@ import ListWrapper from "../components/ListWrapper"
 import SchoolDropDown from "../components/SchoolDropdown"
 import Homerooms from "../components/Homerooms"
 import DailySchedule from "../components/DailySchedule"
+import TeacherPoints from "../components/TeacherPoints"
 
 export default async function Home({ params, searchParams }) {
+  const school = params.school
+  const dateParam = searchParams.date
+  const selectedTeacher = searchParams.selectedTeacher
+  const selectedTeacherDate = searchParams.selectedTeacherDate
+  const selectedTeacherPeriod = searchParams.selectedTeacherPeriod
+
   await initializeDB()
 
-  const teachers = params.school
-    ? await getTeachersBySchoolId(params.school)
+  const teachers = school
+    ? await getTeachersBySchoolId(school)
     : await getAllTeachers()
 
-  const students = params.school
-    ? await getStudentsBySchoolId(params.school)
+  const students = school
+    ? await getStudentsBySchoolId(school)
     : await getAllStudents()
 
   const schools = await getAllSchools()
 
-  const currentSchool =
-    params.school && schools.find(school => String(school.id) === params.school)
-
-  const dateParam = searchParams.date
+  const currentSchool = school && schools.find(s => String(s.id) === school)
 
   return (
-    <div className='grid gap-y-6'>
+    <div className='grid pb-16 gap-y-6'>
       <SchoolDropDown items={schools} />
 
       <h2 className='p-6 text-3xl'>
@@ -63,14 +67,17 @@ export default async function Home({ params, searchParams }) {
       {currentSchool ? (
         <DailySchedule currentSchool={currentSchool} dateParam={dateParam} />
       ) : (
-        schools.map(school => (
-          <DailySchedule
-            key={school.id}
-            currentSchool={school}
-            dateParam={dateParam}
-          />
+        schools.map(s => (
+          <DailySchedule key={s.id} currentSchool={s} dateParam={dateParam} />
         ))
       )}
+
+      <TeacherPoints
+        teachers={teachers}
+        selectedTeacher={selectedTeacher}
+        selectedTeacherDate={selectedTeacherDate}
+        selectedTeacherPeriod={selectedTeacherPeriod}
+      />
 
       {/* {mockData.map(day => (
         <DayData key={day.date} studentData={day} />
