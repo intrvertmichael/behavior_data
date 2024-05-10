@@ -57,7 +57,7 @@ export default function AddHomeroom({ schools }) {
       <div className='flex flex-col items-end p-3 border rounded'>
         <button onClick={handleClick}>x</button>
 
-        <form className='p-3'>
+        <form className='flex flex-col gap-6 p-3'>
           <label>Add Homeroom to School</label>
 
           <p className='text-neutral-500'>
@@ -91,11 +91,7 @@ export default function AddHomeroom({ schools }) {
             />
           )}
 
-          <Button
-            label='Add Homeroom'
-            onClick={handleSubmit}
-            className='mt-6'
-          />
+          <Button label='Add Homeroom' onClick={handleSubmit} />
         </form>
       </div>
     )

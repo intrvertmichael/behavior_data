@@ -49,14 +49,14 @@ export default function AddDailySchedule({ currentSchool, date }) {
 
   useEffect(() => {
     const getOptions = async () => {
-      setTeachers(await getTeachersBySchoolId("1"))
+      setTeachers(await getTeachersBySchoolId(currentSchool.id))
 
-      const homerooms = await getHomeroomsBySchoolId("1")
+      const homerooms = await getHomeroomsBySchoolId(currentSchool.id)
       setHomeroomClasses(homerooms)
     }
 
     getOptions()
-  }, [])
+  }, [currentSchool])
 
   const handleClick = async e => {
     e.preventDefault()
