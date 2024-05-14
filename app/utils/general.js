@@ -1,3 +1,5 @@
+import { isEmpty } from "lodash"
+
 export const createMDYDate = date => {
   const dateObj = new Date(date)
   const months = [
@@ -30,8 +32,18 @@ export const createISODate = date => {
   return `${year}-${month}-${day}`
 }
 
-export const createParamQuery = (name, value, searchParams) => {
+export const createParamQuery = (name, value, searchParams = "") => {
   const params = new URLSearchParams(searchParams.toString())
   params.set(name, value)
-  return params.toString()
+  return `?${params.toString()}`
+}
+
+export const removeParamQuery = (name, searchParams = "") => {
+  const params = new URLSearchParams(searchParams.toString())
+
+  if (!isEmpty(params.get(name))) {
+    params.delete(name)
+  }
+
+  return `?${params.toString()}`
 }

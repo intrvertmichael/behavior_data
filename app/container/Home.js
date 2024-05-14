@@ -17,7 +17,7 @@ import TeacherPoints from "../components/TeacherPoints"
 
 export default async function Home({ params, searchParams }) {
   const school = params.school
-  const dateParam = searchParams.date
+  const dateParam = searchParams.dailyScheduleDate
   const selectedTeacher = searchParams.selectedTeacher
   const selectedTeacherDate = searchParams.selectedTeacherDate
   const selectedTeacherPeriod = searchParams.selectedTeacherPeriod
@@ -64,13 +64,16 @@ export default async function Home({ params, searchParams }) {
 
       <Homerooms currentSchool={currentSchool} />
 
-      {currentSchool ? (
-        <DailySchedule currentSchool={currentSchool} dateParam={dateParam} />
-      ) : (
-        schools.map(s => (
-          <DailySchedule key={s.id} currentSchool={s} dateParam={dateParam} />
-        ))
-      )}
+      <div className='grid gap-6 p-6 border rounded border-neutral-900'>
+        <h2 className='text-2xl'>Daily Schedules</h2>
+        {currentSchool ? (
+          <DailySchedule currentSchool={currentSchool} dateParam={dateParam} />
+        ) : (
+          schools.map(s => (
+            <DailySchedule key={s.id} currentSchool={s} dateParam={dateParam} />
+          ))
+        )}
+      </div>
 
       <TeacherPoints
         teachers={teachers}

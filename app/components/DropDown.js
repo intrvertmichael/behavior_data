@@ -7,6 +7,7 @@ export default function DropDown({
   fullWidth,
   required,
   divClassname = "",
+  selectClassname = "",
 }) {
   return (
     <div className={`flex gap-3  ${fullWidth ? "w-full" : ""} ${divClassname}`}>
@@ -19,7 +20,9 @@ export default function DropDown({
       <select
         name='school'
         id='school-select'
-        className={`p-1 text-black rounded ${fullWidth ? "w-full" : ""}`}
+        className={`p-1 text-black rounded ${
+          fullWidth ? "w-full" : ""
+        } ${selectClassname}`}
         value={value}
         onChange={onChange}
         required={required}

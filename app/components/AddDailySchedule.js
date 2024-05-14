@@ -49,6 +49,7 @@ export default function AddDailySchedule({ currentSchool, date }) {
 
   useEffect(() => {
     const getOptions = async () => {
+      if (isEmpty(currentSchool.id)) return
       setTeachers(await getTeachersBySchoolId(currentSchool.id))
       setHomeroomClasses(await getHomeroomsBySchoolId(currentSchool.id))
     }

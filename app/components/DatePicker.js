@@ -8,6 +8,7 @@ import {
   createISODate,
   createMDYDate,
   createParamQuery,
+  removeParamQuery,
 } from "../utils/general"
 
 import DropDown from "./DropDown"
@@ -19,15 +20,19 @@ export default function DatePicker({ value, previousDates }) {
 
   const todayISODate = createISODate()
 
+  const removeParamQueryCallback = useCallback(removeParamQuery, [searchParams])
   const createParamQueryCallback = useCallback(createParamQuery, [searchParams])
 
   const onChange = e => {
     router.push(
       isEmpty(e.target.value)
-        ? pathname
+        ? pathname + removeParamQueryCallback("dailyScheduleDate", searchParams)
         : pathname +
-            "?" +
-            createParamQueryCallback("date", e.target.value, searchParams),
+            createParamQueryCallback(
+              "dailyScheduleDate",
+              e.target.value,
+              searchParams,
+            ),
     )
   }
 

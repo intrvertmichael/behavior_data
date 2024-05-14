@@ -16,6 +16,8 @@ export default async function TeacherPoints({
     selectedTeacher && (await getDailySchedulesForTeacher(selectedTeacher))
 
   const selectedHomeroom =
+    selectedTeacher &&
+    selectedTeacherDate &&
     selectedTeacherPeriod &&
     (await getSelectedHomeroom({
       teacher_id: selectedTeacher,
@@ -27,16 +29,14 @@ export default async function TeacherPoints({
     selectedHomeroom && (await getStudentsByHomeroom(selectedHomeroom))
 
   return (
-    <div className='p-6 border border-neutral-900'>
-      <TeacherPointsOptions
-        teachers={teachers}
-        selectedTeacher={selectedTeacher}
-        selectedTeacherDate={selectedTeacherDate}
-        dailySchedules={dailySchedules}
-        selectedTeacherPeriod={selectedTeacherPeriod}
-        studentsInHomeroom={studentsInHomeroom}
-        selectedHomeroom={selectedHomeroom}
-      />
-    </div>
+    <TeacherPointsOptions
+      teachers={teachers}
+      selectedTeacher={selectedTeacher}
+      selectedTeacherDate={selectedTeacherDate}
+      dailySchedules={dailySchedules}
+      selectedTeacherPeriod={selectedTeacherPeriod}
+      studentsInHomeroom={studentsInHomeroom}
+      selectedHomeroom={selectedHomeroom}
+    />
   )
 }

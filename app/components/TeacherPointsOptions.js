@@ -8,6 +8,7 @@ import {
   createISODate,
   createMDYDate,
   createParamQuery,
+  removeParamQuery,
 } from "../utils/general"
 
 import DropDown from "./DropDown"
@@ -25,28 +26,26 @@ export default function TeacherPointsOptions({
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
+  const removeParamQueryCallback = useCallback(removeParamQuery, [searchParams])
   const createParamQueryCallback = useCallback(createParamQuery, [searchParams])
 
   const handleTeacherChange = e => {
+    router.push(pathname)
+
     router.push(
       isEmpty(e.target.value)
-        ? pathname
+        ? pathname + removeParamQueryCallback("selectedTeacher")
         : pathname +
-            "?" +
-            createParamQueryCallback(
-              "selectedTeacher",
-              e.target.value,
-              searchParams,
-            ),
+            createParamQueryCallback("selectedTeacher", e.target.value),
     )
   }
 
   const handleTeacherDateChange = e => {
     router.push(
       isEmpty(e.target.value)
-        ? pathname
+        ? pathname +
+            removeParamQueryCallback("selectedTeacherDate", searchParams)
         : pathname +
-            "?" +
             createParamQueryCallback(
               "selectedTeacherDate",
               e.target.value,
@@ -58,9 +57,9 @@ export default function TeacherPointsOptions({
   const handleSelectedTeacherPeriodChange = e => {
     router.push(
       isEmpty(e.target.value)
-        ? pathname
+        ? pathname +
+            removeParamQueryCallback("selectedTeacherPeriod", searchParams)
         : pathname +
-            "?" +
             createParamQueryCallback(
               "selectedTeacherPeriod",
               e.target.value,
@@ -70,8 +69,11 @@ export default function TeacherPointsOptions({
   }
 
   return (
-    <div>
+    <div className='grid gap-3 p-6 border border-neutral-900'>
+      <h2 className='text-2xl'>Teacher&apos;s View</h2>
+
       <DropDown
+        label='Teacher'
         value={selectedTeacher || ""}
         onChange={handleTeacherChange}
         defaultItem={{ value: "", id: "", name: "- Please Choose a teacher -" }}
@@ -85,12 +87,13 @@ export default function TeacherPointsOptions({
       {selectedTeacher && (
         <>
           <DropDown
+            label='Date'
             value={selectedTeacherDate || ""}
             onChange={handleTeacherDateChange}
             defaultItem={{
               value: "",
               id: "",
-              name: "- Please Choose a date -",
+              name: "- Choose a date -",
             }}
             items={dailySchedules?.map(d => {
               const date = createISODate(d.date)
@@ -105,7 +108,7 @@ export default function TeacherPointsOptions({
             defaultItem={{
               value: "",
               id: "",
-              name: "- Please Choose a period -",
+              name: "--",
             }}
             items={["period1", "period2", "period3", "period4", "period5"]?.map(
               d => {
@@ -115,12 +118,13 @@ export default function TeacherPointsOptions({
           />
 
           {selectedHomeroom && (
-            <div>
-              <p>Class {selectedHomeroom} Students:</p>
-
+            <div className='grid gap-3 p-3'>
+              <p>Class {selectedHomeroom} Students</p>
               <div>
                 {studentsInHomeroom?.map(s => (
-                  <p key={s.id}>{s.name}</p>
+                  <p key={s.id} className='py-1'>
+                    {s.name}
+                  </p>
                 ))}
               </div>
             </div>
