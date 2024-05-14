@@ -29,10 +29,10 @@ function HomeroomClassDropDown({ value, onChange, items }) {
 
 export default function AddDailySchedule({ currentSchool, date }) {
   const router = useRouter()
+
   const [teacher_id, setTeacherId] = useState()
   const [teachers, setTeachers] = useState()
   const [homeroomClasses, setHomeroomClasses] = useState()
-
   const [period1, setperiod1] = useState()
   const [period2, setperiod2] = useState()
   const [period3, setperiod3] = useState()
@@ -50,9 +50,7 @@ export default function AddDailySchedule({ currentSchool, date }) {
   useEffect(() => {
     const getOptions = async () => {
       setTeachers(await getTeachersBySchoolId(currentSchool.id))
-
-      const homerooms = await getHomeroomsBySchoolId(currentSchool.id)
-      setHomeroomClasses(homerooms)
+      setHomeroomClasses(await getHomeroomsBySchoolId(currentSchool.id))
     }
 
     getOptions()
@@ -74,17 +72,24 @@ export default function AddDailySchedule({ currentSchool, date }) {
       period5,
     })
 
+    setTeacherId("")
+    setperiod1("")
+    setperiod2("")
+    setperiod3("")
+    setperiod4("")
+    setperiod5("")
+
     router.refresh()
   }
-
-  const homeroomOptions = homeroomClasses?.map(homeroom => ({
-    name: `Class ${homeroom.id}`,
-    id: homeroom.id,
-  }))
 
   if (isEmpty(currentSchool) || isEmpty(teachers) || isEmpty(homeroomClasses)) {
     return <></>
   }
+
+  const homeroomOptions = homeroomClasses.map(homeroom => ({
+    name: `Class ${homeroom.id}`,
+    id: homeroom.id,
+  }))
 
   return (
     <form className='border border-neutral-900'>

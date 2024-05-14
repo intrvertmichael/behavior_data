@@ -1,6 +1,5 @@
 import {
   getDailySchedulesForTeacher,
-  getHomeroomById,
   getSelectedHomeroom,
   getStudentsByHomeroom,
 } from "../utils/dbFunctions"
